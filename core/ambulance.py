@@ -10,8 +10,8 @@ class Ambulance(object):
         self.heart = self.pygame.image.load("./images/scboard/heart.png")
         self.x, self.y = x, y
         self.screen = screen
-        self.lives, self.score = 3, 0
-        self.ui = self.pygame.font.SysFont("monaco", 25)
+        self.lives, self.score, self.level = 3, 0, 1
+        self.ui = self.pygame.font.SysFont("monaco", 20)
 
     def draw(self):
         self.screen.blit(self.image, [self.x, self.y])
@@ -52,4 +52,6 @@ class Ambulance(object):
             self.screen.blit(self.heart, [20 + i, 525])
             i += 34
         ui_sc = self.ui.render("Score: %s" % self.score, 1, (0, 0, 0))
-        self.screen.blit(ui_sc, (20, 570))
+        self.screen.blit(ui_sc, (20, 575))
+        ui_lvl = self.ui.render("Level: %s" % self.level, 1, (0, 0, 0))
+        self.screen.blit(ui_lvl, (420, 575))

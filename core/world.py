@@ -8,6 +8,7 @@ import random
 import math
 from road import *
 from ambulance import *
+from hospital import *
 from board import *
 
 class World:
@@ -24,11 +25,13 @@ class World:
         self.board = Board(pygame, self.screen)
         self.road = Road(self, self.screen)
         self.amb = Ambulance(self, self.screen, 40, 175)
+        self.hospital = Hospital(self, self.screen, 400, 260)
 
     def draw(self):
         self.board.draw()
         self.road.draw()
         self.amb.draw()
+        self.hospital.draw()
 
     def play(self):
         while True:
