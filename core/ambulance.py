@@ -3,6 +3,8 @@
 # Author zhzhussupovkz@gmail.com
 # Ambulance class
 
+import time
+
 class Ambulance(object):
     def __init__(self, world, screen, x, y):
         self.pygame, self.world = world.pygame, world
@@ -11,6 +13,8 @@ class Ambulance(object):
         self.x, self.y = x, y
         self.screen = screen
         self.lives, self.score, self.level = 3, 0, 1
+        self.total_distance = 0
+        self.last_hospital = int(time.time())
         self.ui = self.pygame.font.SysFont("monaco", 20)
 
     def draw(self):
@@ -32,8 +36,11 @@ class Ambulance(object):
             self.x -= 0.1
 
     def go(self):
-        if self.x <= 400:
+        if self.x <= 320:
             self.x += 0.2
+        self.total_distance += 10
+        if self.total_distance % 1000 == 0:
+            self.score += 10
 
     def driving(self):
         key = self.pygame.key.get_pressed()
