@@ -21,7 +21,7 @@ class Hospital:
     def update(self):
         current = self.world.amb.last_hospital
         t = random.randint(current + 10, current + 30)
-        if t == int(time.time()):
+        if t == int(time.time()) and self.world.amb.total_distance > 1000:
             self.drawing = True
 
     def move(self):

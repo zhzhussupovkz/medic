@@ -12,6 +12,7 @@ from hospital import *
 from tree import *
 from house import *
 from board import *
+from qa import *
 
 class World:
     SIZE = (480, 640)
@@ -25,6 +26,7 @@ class World:
         self.screen = pygame.display.set_mode(self.SIZE)
         self.background_image = pygame.image.load("./images/env/green.png").convert()
         self.board = Board(pygame, self.screen)
+        self.qa = QA(pygame, self.screen)
         self.road = Road(self, self.screen)
         self.trees, self.houses = [], []
         self.gen_trees()
@@ -55,6 +57,7 @@ class World:
             tree.draw()
         for house in self.houses:
             house.draw()
+        self.qa.draw()
 
     def play(self):
         while True:
@@ -74,5 +77,6 @@ class World:
                 house.move()
             self.road.move()
             self.amb.driving()
+            self.qa.update()
             pygame.display.flip()
         pygame.quit()

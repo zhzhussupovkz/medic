@@ -12,7 +12,6 @@ class Board:
         self.image = self.pygame.image.load("./images/scboard/board.png")
         self.doctor = self.pygame.image.load("./images/scboard/doctor.png")
         self.ui = self.pygame.font.SysFont("monaco", 15)
-        self.controls = self.pygame.font.SysFont("monaco", 20)
 
     def draw(self):
         self.screen.blit(self.image, [0, 520])
