@@ -8,6 +8,7 @@ import random
 import math
 from road import *
 from ambulance import *
+from board import *
 
 class World:
     SIZE = (480, 640)
@@ -20,10 +21,12 @@ class World:
         self.pygame = pygame
         self.screen = pygame.display.set_mode(self.SIZE)
         self.background_image = pygame.image.load("./images/env/green.png").convert()
+        self.board = Board(pygame, self.screen)
         self.road = Road(self, self.screen)
         self.amb = Ambulance(self, self.screen, 40, 175)
 
     def draw(self):
+        self.board.draw()
         self.road.draw()
         self.amb.draw()
 
