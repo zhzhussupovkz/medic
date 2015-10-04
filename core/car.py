@@ -8,7 +8,7 @@ import random
 class Car(object):
     def __init__(self, world, screen, x, y):
         self.pygame, self.world = world.pygame, world
-        model = random.choice(["car_1", "car_2", "car_3", "car_4"])
+        model = random.choice(["car_1", "car_2", "car_3", "car_4", "car_5", "car_6"])
         self.image = self.pygame.image.load("./images/cars/" + model + ".png")
         self.x, self.y = x, y
         self.screen = screen
@@ -44,7 +44,7 @@ class Car(object):
             self.x = 480
 
     def change(self):
-        model = random.choice(["car_1", "car_2", "car_3", "car_4"])
+        model = random.choice(["car_1", "car_2", "car_3", "car_4", "car_5", "car_6"])
         image = self.pygame.image.load("./images/cars/" + model + ".png")
         coord = random.randint(55, 80)
         self.y = coord
