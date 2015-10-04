@@ -10,6 +10,11 @@ class Ambulance(object):
         self.pygame, self.world = world.pygame, world
         self.image = self.pygame.image.load("./images/ambulance_little.png")
         self.heart = self.pygame.image.load("./images/scboard/heart.png")
+        self.acc = self.pygame.mixer.Sound("./sounds/acc.ogg")
+        self.beep_sound = self.pygame.mixer.Sound("./sounds/beep.ogg")
+        self.door_sound = self.pygame.mixer.Sound("./sounds/door.ogg")
+        self.collect_sound = self.pygame.mixer.Sound("./sounds/collect.ogg")
+        self.acc.set_volume(0.01)
         self.x, self.y = x, y
         self.screen = screen
         self.lives, self.score, self.level = 3, 0, 1

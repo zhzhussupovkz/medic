@@ -8,6 +8,7 @@ import random
 import math
 from road import *
 from ambulance import *
+from car import *
 from hospital import *
 from tree import *
 from house import *
@@ -28,11 +29,18 @@ class World:
         self.board = Board(pygame, self.screen)
         self.qa = QA(pygame, self.screen)
         self.road = Road(self, self.screen)
-        self.trees, self.houses = [], []
+        self.cars, self.trees, self.houses = [], [], []
+        self.gen_cars()
         self.gen_trees()
         self.gen_houses()
         self.amb = Ambulance(self, self.screen, 40, 175)
         self.hospital = Hospital(self, self.screen, 400, 340)
+
+    def gen_cars(self):
+        i = 20
+        while i <= 440:
+            self.cars.append(Car(self, self.screen, i, 55))
+            i += 125
 
     def gen_trees(self):
         i = 20
@@ -53,6 +61,8 @@ class World:
         self.road.draw()
         self.amb.draw()
         self.hospital.draw()
+        for car in self.cars:
+            car.draw()
         for tree in self.trees:
             tree.draw()
         for house in self.houses:
@@ -71,6 +81,8 @@ class World:
             self.draw()
             self.hospital.update()
             self.hospital.move()
+            for car in self.cars:
+                car.driving()
             for tree in self.trees:
                 tree.move()
             for house in self.houses:
