@@ -19,7 +19,8 @@ class Ambulance(object):
         self.screen = screen
         self.lives, self.score, self.level = 3, 0, 1
         self.total_distance = 0
-        self.last_hospital = int(time.time())
+        self.patient = False
+        self.last_hospital = self.last_trip = int(time.time())
         self.ui = self.pygame.font.SysFont("monaco", 20)
 
     def draw(self):
@@ -45,18 +46,39 @@ class Ambulance(object):
             self.x += 0.2
         self.total_distance += 10
         if self.total_distance % 1000 == 0:
-            self.score += 10
+            if self.patient:
+                self.score += 25
+                self.world.patient.cab_ride()
+            else:
+                self.score += 10
+        if self.world.patient.distance == 0:
+            self.del_patient()
+            self.world.patient.update_dist()
 
     def driving(self):
         key = self.pygame.key.get_pressed()
         if key[self.pygame.K_RIGHT]:
             self.go()
+            self.acc.play()
         elif key[self.pygame.K_LEFT]:
             self.brake()
         if key[self.pygame.K_DOWN]:
             self.move_right()
         elif key[self.pygame.K_UP]:
             self.move_left()
+
+    # add patient
+    def add_patient(self):
+        self.acc.stop()
+        self.patient = True
+        self.door_sound.play()
+
+    # delete patient
+    def del_patient(self):
+        self.acc.stop()
+        time.sleep(2)
+        self.patient = False
+        self.door_sound.play()
 
     def draw_score(self):
         i = 0

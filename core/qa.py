@@ -32,5 +32,5 @@ class QA:
             if event.type == self.pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = self.pygame.mouse.get_pos()
                 mx, my = list(pos)
-                if mx >= 390 and mx <= 397 and my >= 64 and my <= 66:
+                if mx >= 385 and mx <= 400 and my >= 60 and my <= 70:
                     self.drawing = False

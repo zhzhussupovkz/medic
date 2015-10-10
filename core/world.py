@@ -10,6 +10,7 @@ from road import *
 from ambulance import *
 from car import *
 from hospital import *
+from patient import *
 from tree import *
 from house import *
 from board import *
@@ -34,6 +35,7 @@ class World:
         self.gen_trees()
         self.gen_houses()
         self.amb = Ambulance(self, self.screen, 40, 175)
+        self.patient = Patient(self, self.screen, 300, 340)
         self.hospital = Hospital(self, self.screen, 400, 340)
 
     def gen_cars(self):
@@ -60,6 +62,7 @@ class World:
         self.board.draw()
         self.road.draw()
         self.amb.draw()
+        self.patient.draw()
         self.hospital.draw()
         for car in self.cars:
             car.draw()
@@ -79,6 +82,8 @@ class World:
                 sys.exit()
             self.screen.blit(self.background_image, [0, 0])
             self.draw()
+            self.patient.update()
+            self.patient.move()
             self.hospital.update()
             self.hospital.move()
             for car in self.cars:
