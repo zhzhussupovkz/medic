@@ -12,6 +12,11 @@ class QA:
         self.drawing, self.question = True, False
         self.image = self.pygame.image.load("./images/qa/qa.png")
         self.close = self.pygame.image.load("./images/qa/close.png")
+        self.a_button = self.pygame.image.load("./images/qa/a.png")
+        self.b_button = self.pygame.image.load("./images/qa/b.png")
+        self.c_button = self.pygame.image.load("./images/qa/c.png")
+        self.d_button = self.pygame.image.load("./images/qa/d.png")
+        self.e_button = self.pygame.image.load("./images/qa/e.png")
         self.ui = self.pygame.font.SysFont("monaco", 20)
         self.conn = sqlite3.connect("./core/db/main.db")
         self.c = self.conn.cursor()
@@ -75,6 +80,14 @@ class QA:
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
+
+            i += 32
+
+            self.screen.blit(self.a_button, [125, i])
+            self.screen.blit(self.b_button, [175, i])
+            self.screen.blit(self.c_button, [225, i])
+            self.screen.blit(self.d_button, [275, i])
+            self.screen.blit(self.e_button, [325, i])
 
     def close(self):
         self.conn.commit()
