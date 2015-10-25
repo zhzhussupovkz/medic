@@ -71,6 +71,7 @@ class World:
         for house in self.houses:
             house.draw()
         self.qa.draw()
+        self.qa.draw_question(id = 1)
 
     def play(self):
         while True:
@@ -97,3 +98,4 @@ class World:
             self.qa.update()
             pygame.display.flip()
         pygame.quit()
+        self.qa.close()

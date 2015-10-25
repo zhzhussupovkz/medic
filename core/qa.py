@@ -9,10 +9,12 @@ class QA:
     def __init__(self, pygame, screen):
         self.pygame = pygame
         self.screen = screen
-        self.drawing = True
+        self.drawing, self.question = True, False
         self.image = self.pygame.image.load("./images/qa/qa.png")
         self.close = self.pygame.image.load("./images/qa/close.png")
         self.ui = self.pygame.font.SysFont("monaco", 20)
+        self.conn = sqlite3.connect("./core/db/main.db")
+        self.c = self.conn.cursor()
 
     def chunk(self, text, length):
         return list(text[0+i:length+i] for i in range(0, len(text), length))
@@ -29,10 +31,59 @@ class QA:
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
+    def draw_question(self, id):
+        qs = self.c.execute("SELECT * FROM question WHERE id=?", (int(id),))
+        current = qs.fetchone()
+        if self.question:
+            self.screen.blit(self.image, [50, 50])
+            self.screen.blit(self.close, [380, 50])
+            text = current[1]
+            i = 100
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+            i += 20
+
+            text = u"A) %s" % current[2]
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+            text = u"B) %s" % current[3]
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+            text = u"C) %s" % current[4]
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+            text = u"D) %s" % current[5]
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+            text = u"E) %s" % current[6]
+            for t in self.chunk(text, 36):
+                copyright = self.ui.render(t, 1, (0, 0, 0))
+                self.screen.blit(copyright, (90, i))
+                i += 15
+
+    def close(self):
+        self.conn.commit()
+        self.conn.close()
+
     def update(self):
         for event in self.pygame.event.get():
             if event.type == self.pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = self.pygame.mouse.get_pos()
                 mx, my = list(pos)
                 if mx >= 385 and mx <= 400 and my >= 60 and my <= 70:
-                    self.drawing = False
+                    self.drawing, self.question = False, False

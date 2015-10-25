@@ -40,6 +40,7 @@ class Patient:
             if key[self.pygame.K_z] and (self.ride == False):
                 self.drawing = False
                 self.world.amb.add_patient()
+                self.world.qa.question = True
 
     # change patient
     def change(self):
