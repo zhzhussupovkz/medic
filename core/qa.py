@@ -4,6 +4,7 @@
 # Q&A class
 
 import sqlite3
+import time
 
 class QA:
     def __init__(self, pygame, screen):
@@ -20,6 +21,8 @@ class QA:
         self.ui = self.pygame.font.SysFont("monaco", 20)
         self.conn = sqlite3.connect("./core/db/main.db")
         self.c = self.conn.cursor()
+        self.fin = ''
+        self.last_answer = int(time.time())
 
     def chunk(self, text, length):
         return list(text[0+i:length+i] for i in range(0, len(text), length))
@@ -89,6 +92,33 @@ class QA:
             self.screen.blit(self.d_button, [275, i])
             self.screen.blit(self.e_button, [325, i])
 
+            answer = current[7]
+            f = self.ui.render(self.fin, 1, (0, 0, 0))
+            self.screen.blit(f, (200, i + 50))
+
+            for event in self.pygame.event.get():
+                if event.type == self.pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    pos = self.pygame.mouse.get_pos()
+                    mx, my = list(pos)
+                    if answer == 'a' and mx >= 125 and mx <= 155 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Правильно!"
+                        self.last_answer = int(time.time())
+                    elif answer == 'b' and mx >= 175 and mx <= 200 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Правильно!"
+                        self.last_answer = int(time.time())
+                    elif answer == 'c' and mx >= 225 and mx <= 250 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Правильно!"
+                        self.last_answer = int(time.time())
+                    elif answer == 'd' and mx >= 270 and mx <= 300 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Правильно!"
+                        self.last_answer = int(time.time())
+                    elif answer == 'b' and mx >= 325 and mx <= 355 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Правильно!"
+                        self.last_answer = int(time.time())
+                    elif mx >= 125 and mx <= 355 and my >= (i - 5) and my <= (i + 30):
+                        self.fin = u"Неправильно!"
+                        self.last_answer = int(time.time())
+
     def close(self):
         self.conn.commit()
         self.conn.close()
@@ -100,3 +130,8 @@ class QA:
                 mx, my = list(pos)
                 if mx >= 385 and mx <= 400 and my >= 60 and my <= 70:
                     self.drawing, self.question = False, False
+
+        if self.question:
+            t = self.last_answer + 2
+            if t == int(time.time()) and self.fin in [u"Правильно!", u"Неправильно!"]:
+                self.question = False
