@@ -3,6 +3,8 @@
 # Author zhzhussupovkz@gmail.com
 # Q&A class
 
+import sqlite3
+
 class QA:
     def __init__(self, pygame, screen):
         self.pygame = pygame
