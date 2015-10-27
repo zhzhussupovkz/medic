@@ -14,6 +14,7 @@ class Ambulance(object):
         self.beep_sound = self.pygame.mixer.Sound("./sounds/beep.ogg")
         self.door_sound = self.pygame.mixer.Sound("./sounds/door.ogg")
         self.collect_sound = self.pygame.mixer.Sound("./sounds/collect.ogg")
+        self.die = self.pygame.mixer.Sound("./sounds/die.ogg")
         self.acc.set_volume(0.01)
         self.x, self.y = x, y
         self.screen = screen
@@ -59,6 +60,10 @@ class Ambulance(object):
         self.calculate_score()
 
     def driving(self):
+        if self.score <= 0:
+            self.score = 0
+        if self.lives == 0:
+            self.world.game_over = True
         key = self.pygame.key.get_pressed()
         if key[self.pygame.K_RIGHT]:
             self.go()

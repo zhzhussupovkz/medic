@@ -27,7 +27,7 @@ class World:
         self.pygame = pygame
         self.screen = pygame.display.set_mode(self.SIZE)
         self.background_image = pygame.image.load("./images/env/green.png").convert()
-        self.board = Board(pygame, self.screen)
+        self.board = Board(self, self.screen)
         self.road = Road(self, self.screen)
         self.cars, self.trees, self.houses = [], [], []
         self.gen_cars()
@@ -37,6 +37,8 @@ class World:
         self.patient = Patient(self, self.screen, 300, 340)
         self.hospital = Hospital(self, self.screen, 400, 340)
         self.qa = QA(self, self.screen)
+        self.game_over = False
+        self.game_over_sound = self.pygame.mixer.Sound("./sounds/game_over.ogg")
 
     def gen_cars(self):
         i = 20
@@ -97,5 +99,9 @@ class World:
             self.amb.driving()
             self.qa.update()
             pygame.display.flip()
+            if self.game_over:
+                self.game_over_sound.play()
+                time.sleep(5)
+                sys.exit()
         pygame.quit()
         self.qa.close()

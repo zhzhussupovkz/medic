@@ -155,6 +155,8 @@ class QA:
                     self.world.amb.score += 1000
                 elif self.fin == u"Неправильно!":
                     self.world.amb.score -= 500
+                    self.world.amb.lives -= 1
+                    self.world.amb.die.play()
                 self.question = False
                 self.fin = ''
                 level = self.world.amb.level
