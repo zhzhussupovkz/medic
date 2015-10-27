@@ -45,6 +45,7 @@ class Ambulance(object):
         if self.x <= 320:
             self.x += 0.2
         self.total_distance += 10
+
         if self.total_distance % 1000 == 0:
             if self.patient:
                 self.score += 25
@@ -54,6 +55,8 @@ class Ambulance(object):
         if self.world.patient.distance == 0:
             self.del_patient()
             self.world.patient.update_dist()
+
+        self.calculate_score()
 
     def driving(self):
         key = self.pygame.key.get_pressed()
@@ -79,6 +82,12 @@ class Ambulance(object):
         time.sleep(2)
         self.patient = False
         self.door_sound.play()
+
+    def calculate_score(self):
+        if self.score >= 5000 and self.score < 10000:
+            self.level = 2
+        elif self.score > 10000:
+            self.level = 3
 
     def draw_score(self):
         i = 0

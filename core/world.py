@@ -28,7 +28,7 @@ class World:
         self.screen = pygame.display.set_mode(self.SIZE)
         self.background_image = pygame.image.load("./images/env/green.png").convert()
         self.board = Board(pygame, self.screen)
-        self.qa = QA(pygame, self.screen)
+        self.qa = QA(self, self.screen)
         self.road = Road(self, self.screen)
         self.cars, self.trees, self.houses = [], [], []
         self.gen_cars()
@@ -71,7 +71,7 @@ class World:
         for house in self.houses:
             house.draw()
         self.qa.draw()
-        self.qa.draw_question(id = 1)
+        self.qa.draw_question()
 
     def play(self):
         while True:

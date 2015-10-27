@@ -7,8 +7,8 @@ import sqlite3
 import time
 
 class QA:
-    def __init__(self, pygame, screen):
-        self.pygame = pygame
+    def __init__(self, world, screen):
+        self.world, self.pygame = world, world.pygame
         self.screen = screen
         self.drawing, self.question = True, False
         self.image = self.pygame.image.load("./images/qa/qa.png")
@@ -47,13 +47,14 @@ class QA:
                     self.screen.blit(copyright, (90, i + j))
                     i += 15
 
-    def draw_question(self, id):
-        qs = self.c.execute("SELECT * FROM question WHERE id=?", (int(id),))
+    def draw_question(self):
+        level = self.world.amb.level
+        qs = self.c.execute("SELECT * FROM question WHERE level=?", (int(level),))
         current = qs.fetchone()
         if self.question:
             self.screen.blit(self.image, [50, 50])
             self.screen.blit(self.close, [380, 50])
-            text = current[1]
+            text = current[2]
             i = 100
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
@@ -62,31 +63,31 @@ class QA:
 
             i += 20
 
-            text = u"A) %s" % current[2]
+            text = u"A) %s" % current[3]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"B) %s" % current[3]
+            text = u"B) %s" % current[4]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"C) %s" % current[4]
+            text = u"C) %s" % current[5]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"D) %s" % current[5]
+            text = u"D) %s" % current[6]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"E) %s" % current[6]
+            text = u"E) %s" % current[7]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
@@ -100,7 +101,7 @@ class QA:
             self.screen.blit(self.d_button, [275, i])
             self.screen.blit(self.e_button, [325, i])
 
-            answer = current[7]
+            answer = current[8]
             f = self.ui.render(self.fin, 1, (0, 0, 0))
             self.screen.blit(f, (200, i + 50))
 
@@ -142,4 +143,22 @@ class QA:
         if self.question:
             t = self.last_answer + 2
             if t == int(time.time()) and self.fin in [u"Правильно!", u"Неправильно!"]:
+                if self.fin == u"Правильно!":
+                    self.world.amb.score += 1000
+                elif self.fin == u"Неправильно!":
+                    self.world.amb.score -= 500
                 self.question = False
+                self.fin = ''
+
+    def create_questions(self):
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (1, 1, 'Какие суставы чаще всего вовлекаются в патологический процесс при РА?', 'Проксимальные межфаланговые суставы кистей.', 'Дистальные межфаланговые суставы кистей.', 'Коленные суставы.', 'Суставы поясничного отдела позвоночника.', 'Суставы шейного отдела позвоночника', 'c');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (2, 1, 'Какими заболеваниями может сопровождаться РА?', 'Васкулит', 'Подагра', 'Остеохондроз', 'Плеврит', 'Остеопороз', 'a');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer, img) values (3, 1, 'Как называется данный вид деформации пальцев кисти?', 'Шея лебедя', 'Синдром Шегрена', 'Пуговичная петля', 'Плавник моржа', 'Синдром Каплана', 'a', 'q3.png');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (4, 2, 'Для РА характерно: а) утренняя скованность; б) симметричность поражения суставов; в) поражение дистальных межфаланговых суставов; г) гиперемия в области суставов; д)боли в суставах в первую  половину ночи. Выберите правильную комбинацию ответов:', 'а,б', 'б,в', 'в,г', 'а,б,в', 'в,г,д', 'a');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (5, 2, 'При каком осложнении РА анализ мочи является информативным тестом?', 'Синдром Хаменна-Рича', 'Перикардит', 'Амилайдоз', 'Дигитальный ангиит', 'A,C', 'c');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (6, 2, 'Отметьте наиболее характерные легочные проявления ревматоидного артрита?', 'кровохарканье', 'фиброзирующийальвеолит', 'высокое содержание глюкозы в плевральной полости', 'Васкулит', 'Узелки Бушара', 'b');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (7, 3, 'Рентгенологическими признаками ревматоидного артрита являются: а) остеопороз; б) эрозии; в) остеофитоз; г) межпозвоночные оссификаты; д) одностороннийсакролеит. Выберите комбинацию ответов:', 'а,б;', 'б,в;', 'в,г;', 'а,б,в;', 'в,г,д;', 'a');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer, img) values (8, 3, 'Какой вид РА указан на этой картинке?', 'синдром Фелти', 'синдром Каплана', 'синдром Шегнера', 'серпозитивный РА', 'ювенильный РА', 'e', 'q8.png');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (9, 3, 'Выберите характерные иммунологические изменения при РА?', 'Появление антиядерных антител.', 'Определение ревматоидного фактора.', 'Гипокомплементемия.', 'Появление антикардиолипиновых антител.', 'Появление антител к циклическому цитруллинированному пептиду.', 'e');")
+        self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (10, 3, 'Укажите наиболее типичные изменения в клиническом анализе крови больных при РА?', 'лейкопения', 'ускорение СОЭ', 'гипохромная анемия', 'тромбоцитопения', 'B, C', 'e');")
+        self.conn.commit()
