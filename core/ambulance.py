@@ -82,6 +82,7 @@ class Ambulance(object):
         time.sleep(2)
         self.patient = False
         self.door_sound.play()
+        self.world.patient.drawing = True
 
     def calculate_score(self):
         if self.score >= 5000 and self.score < 10000:

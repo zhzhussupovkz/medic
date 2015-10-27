@@ -46,6 +46,7 @@ class Patient:
     def change(self):
         model = random.choice(["boy.png", "girl.png"])
         self.image = self.pygame.image.load("./images/patients/" + model)
+        self.world.amb.last_trip = int(time.time())
 
     # cab ride
     def cab_ride(self):
