@@ -94,6 +94,13 @@ class QA:
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
+            if self.current[9]:
+                i += 20
+                img = self.pygame.image.load("./images/qa/%s" % self.current[9])
+                self.screen.blit(img, [150, i])
+                size = img.get_rect().size
+                i += size[1]
+
             i += 32
 
             self.screen.blit(self.a_button, [125, i])
