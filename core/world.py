@@ -28,7 +28,6 @@ class World:
         self.screen = pygame.display.set_mode(self.SIZE)
         self.background_image = pygame.image.load("./images/env/green.png").convert()
         self.board = Board(pygame, self.screen)
-        self.qa = QA(self, self.screen)
         self.road = Road(self, self.screen)
         self.cars, self.trees, self.houses = [], [], []
         self.gen_cars()
@@ -37,6 +36,7 @@ class World:
         self.amb = Ambulance(self, self.screen, 40, 175)
         self.patient = Patient(self, self.screen, 300, 340)
         self.hospital = Hospital(self, self.screen, 400, 340)
+        self.qa = QA(self, self.screen)
 
     def gen_cars(self):
         i = 20

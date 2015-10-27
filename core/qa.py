@@ -5,6 +5,7 @@
 
 import sqlite3
 import time
+import random
 
 class QA:
     def __init__(self, world, screen):
@@ -24,6 +25,9 @@ class QA:
         self.c = self.conn.cursor()
         self.fin = ''
         self.last_answer = int(time.time())
+        level = world.amb.level
+        qs = self.c.execute("SELECT * FROM question WHERE level=?", (int(level),))
+        self.current = random.choice(qs.fetchall())
 
     def chunk(self, text, length):
         return list(text[0+i:length+i] for i in range(0, len(text), length))
@@ -48,13 +52,10 @@ class QA:
                     i += 15
 
     def draw_question(self):
-        level = self.world.amb.level
-        qs = self.c.execute("SELECT * FROM question WHERE level=?", (int(level),))
-        current = qs.fetchone()
         if self.question:
             self.screen.blit(self.image, [50, 50])
             self.screen.blit(self.close, [380, 50])
-            text = current[2]
+            text = self.current[2]
             i = 100
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
@@ -63,31 +64,31 @@ class QA:
 
             i += 20
 
-            text = u"A) %s" % current[3]
+            text = u"A) %s" % self.current[3]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"B) %s" % current[4]
+            text = u"B) %s" % self.current[4]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"C) %s" % current[5]
+            text = u"C) %s" % self.current[5]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"D) %s" % current[6]
+            text = u"D) %s" % self.current[6]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
                 i += 15
 
-            text = u"E) %s" % current[7]
+            text = u"E) %s" % self.current[7]
             for t in self.chunk(text, 36):
                 copyright = self.ui.render(t, 1, (0, 0, 0))
                 self.screen.blit(copyright, (90, i))
@@ -101,7 +102,7 @@ class QA:
             self.screen.blit(self.d_button, [275, i])
             self.screen.blit(self.e_button, [325, i])
 
-            answer = current[8]
+            answer = self.current[8]
             f = self.ui.render(self.fin, 1, (0, 0, 0))
             self.screen.blit(f, (200, i + 50))
 
@@ -149,6 +150,9 @@ class QA:
                     self.world.amb.score -= 500
                 self.question = False
                 self.fin = ''
+                level = self.world.amb.level
+                qs = self.c.execute("SELECT * FROM question WHERE level=?", (int(level),))
+                self.current = random.choice(qs.fetchall())
 
     def create_questions(self):
         self.c.execute("insert into question (id, level, q, a, b, c, d, e, answer) values (1, 1, 'Какие суставы чаще всего вовлекаются в патологический процесс при РА?', 'Проксимальные межфаланговые суставы кистей.', 'Дистальные межфаланговые суставы кистей.', 'Коленные суставы.', 'Суставы поясничного отдела позвоночника.', 'Суставы шейного отдела позвоночника', 'c');")
